@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0b0d12">
+<title>ToolBox 100 — Offline</title>
+<style>
+:root{--bg:#07090d;--panel:#0d1118;--text:#f7f8fb;--muted:#8f99a8;--line:#202836;--accent:#7c5cff;--accent2:#27c9ff;--shadow:0 18px 55px rgba(0,0,0,.34)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(800px 420px at 8% -8%,rgba(124,92,255,.18),transparent 60%),radial-gradient(700px 380px at 95% 8%,rgba(39,201,255,.09),transparent 60%),var(--bg);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,black,transparent 75%)}
+.app{width:min(1160px,100%);margin:auto;padding:18px 18px 50px}header{position:sticky;top:0;z-index:20;margin:-18px -18px 0;padding:18px;background:rgba(7,9,13,.78);backdrop-filter:blur(20px) saturate(140%);border-bottom:1px solid rgba(255,255,255,.06)}
+.top{display:flex;align-items:center;gap:13px}.logo{position:relative;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#8b6bff,#22c7ff);font-size:23px;box-shadow:0 10px 30px rgba(91,72,220,.3);overflow:hidden}.logo:after{content:"";position:absolute;inset:-80%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.32) 50%,transparent 60%);animation:shine 4.5s linear infinite}h1{font-size:20px;letter-spacing:-.3px;margin:0}.sub{color:var(--muted);font-size:12px;margin-top:2px}.search{display:flex;gap:9px;margin-top:15px}.search .input{flex:1}.search .btn{width:48px;padding:0;display:grid;place-items:center;font-size:18px}
+.input,textarea,select{width:100%;background:rgba(12,16,23,.92);color:var(--text);border:1px solid var(--line);border-radius:13px;padding:12px 13px;outline:0;transition:border-color .2s,box-shadow .2s,transform .2s}.input:hover,textarea:hover,select:hover{border-color:#303b4e}.input:focus,textarea:focus,select:focus{border-color:rgba(124,92,255,.8);box-shadow:0 0 0 4px rgba(124,92,255,.12)}textarea{min-height:125px;resize:vertical}
+.categories{display:flex;gap:7px;overflow:auto;padding:13px 0 2px;scrollbar-width:none}.categories::-webkit-scrollbar{display:none}.chip{white-space:nowrap;background:rgba(16,21,30,.85);color:#9ea8b8;border:1px solid var(--line);padding:8px 11px;border-radius:10px;transition:transform .2s,background .2s,border-color .2s,color .2s}.chip:hover{transform:translateY(-1px);color:#fff;border-color:#374256}.chip.active{color:#fff;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(39,201,255,.09));border-color:rgba(124,92,255,.55);box-shadow:0 5px 18px rgba(124,92,255,.1)}
+.tools-title{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:27px 2px 12px}.tools-title h2{margin:0;font-size:24px;letter-spacing:-.6px}.count{font-size:12px;color:var(--muted);padding-bottom:3px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
+.card{position:relative;overflow:hidden;min-height:165px;background:linear-gradient(155deg,rgba(18,24,34,.96),rgba(10,14,20,.96));border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:0 10px 28px rgba(0,0,0,.18);transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,box-shadow .28s;animation:cardIn .48s cubic-bezier(.2,.75,.25,1) both}.card:before{content:"";position:absolute;width:130px;height:130px;right:-70px;top:-70px;background:radial-gradient(circle,rgba(124,92,255,.16),transparent 68%);transition:transform .35s}.card:hover{transform:translateY(-5px);border-color:rgba(124,92,255,.42);box-shadow:0 18px 38px rgba(0,0,0,.3)}.card:hover:before{transform:scale(1.35)}.icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#171e2a;border:1px solid #273142;font-size:20px;margin-bottom:13px;transition:transform .28s,background .28s}.card:hover .icon{transform:scale(1.08) rotate(-3deg);background:#1d2433}.card h3{margin:0 0 6px;font-size:15px;letter-spacing:-.1px}.card p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.45}.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#7c5cff,#6750e8);color:#fff;border-radius:11px;padding:10px 13px;transition:transform .2s,filter .2s,box-shadow .2s;box-shadow:0 7px 18px rgba(124,92,255,.17)}.btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 10px 24px rgba(124,92,255,.24)}.btn:active{transform:translateY(0) scale(.97)}.btn.secondary{background:#1b222e;box-shadow:none}.btn.danger{background:#4b2029}.btn.small{padding:7px 10px;font-size:12px}
+.tool{display:none}.tool.show{display:block;animation:toolIn .35s cubic-bezier(.2,.8,.2,1)}.panel{position:relative;background:linear-gradient(155deg,rgba(17,22,31,.98),rgba(10,14,20,.98));border:1px solid var(--line);border-radius:20px;padding:19px;margin-top:18px;box-shadow:var(--shadow)}.panel h2{margin:0 0 5px;padding-right:70px}.out{margin-top:11px;background:#080b10;border:1px dashed #303a4a;border-radius:13px;padding:12px;white-space:pre-wrap;word-break:break-word;min-height:44px;color:#dce2ea}.big{font-size:30px;font-weight:750;letter-spacing:-1px}.muted{color:var(--muted)}.hidden{display:none!important}.close{position:absolute;right:15px;top:15px;background:#1c232f;color:#dce2ea;border:1px solid #293242;border-radius:10px;padding:7px 10px;transition:.2s}.close:hover{background:#252e3c;transform:rotate(3deg)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(12px);z-index:50;display:none;padding:15px;overflow:auto}.modal.show{display:block;animation:fade .2s}.modalbox{max-width:720px;margin:7vh auto;background:#11151d;border:1px solid var(--line);border-radius:22px;padding:18px;animation:toolIn .3s}
+@keyframes cardIn{from{opacity:0;transform:translateY(15px) scale(.985)}to{opacity:1;transform:none}}@keyframes toolIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes shine{0%{transform:translateX(-45%) rotate(20deg)}100%{transform:translateX(45%) rotate(20deg)}}
+@media(max-width:620px){.app{padding:12px 12px 40px}header{margin:-12px -12px 0;padding:14px 12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{min-height:157px;padding:13px;border-radius:15px}.card p{font-size:11px}.icon{width:38px;height:38px;font-size:18px;margin-bottom:10px}.tools-title{margin-top:22px}.tools-title h2{font-size:22px}.panel{padding:15px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="top"><div class="logo">⚡</div><div><h1>ToolBox 100</h1><div class="sub">100 tools • offline • ringan • mobile friendly</div></div></div>
+ <div class="search"><input id="search" class="input" placeholder="Cari tool..."><button class="btn" onclick="randomTool()">🎲</button></div>
+ <div class="categories" id="cats"></div>
+</header>
+<div class="tools-title"><h2 id="title">Semua Tools</h2><span class="count" id="count"></span></div>
+<div id="grid" class="grid"></div>
+
+<div id="toolArea" class="tool">
+ <div class="panel">
+  <button class="close" onclick="closeTool()">✕ Tutup</button>
+  <h2 id="toolTitle"></h2><p id="toolDesc" class="muted"></p>
+  <div id="toolBody"></div>
+ </div>
+</div>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox"><button class="close" onclick="hideModal()">✕</button><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
+
+<script>
+const tools=[
+["Kalkulator","🧮","math","Hitung ekspresi matematika","calc"],
+["Kalkulator Persen","％","math","Hitung persentase dari angka","percent"],
+["Kalkulator Diskon","🏷️","math","Harga setelah diskon","discount"],
+["Kalkulator Umur","🎂","math","Hitung umur dari tanggal lahir","age"],
+["Kalkulator BMI","⚖️","math","Hitung BMI","bmi"],
+["Konverter Panjang","📏","convert","Panjang antar satuan","length"],
+["Konverter Berat","⚖️","convert","Berat antar satuan","weight"],
+["Konverter Suhu","🌡️","convert","Celsius, Fahrenheit, Kelvin","temp"],
+["Konverter Waktu","⏱️","convert","Detik, menit, jam, hari","time"],
+["Konverter Data","💾","convert","B, KB, MB, GB, TB","data"],
+["Stopwatch","⏱️","time","Stopwatch dengan lap","stopwatch"],
+["Timer","⏲️","time","Countdown timer","timer"],
+["Pomodoro","🍅","time","Timer fokus sederhana","pomodoro"],
+["Jam Digital","🕐","time","Jam dan tanggal real-time","clock"],
+["Countdown","⏳","time","Hitung mundur ke tanggal","countdown"],
+["Kalender","📅","time","Kalender bulan ini","calendar"],
+["To-do List","✅","productivity","Daftar tugas tersimpan","todo"],
+["Catatan","📝","productivity","Catatan otomatis tersimpan","notes"],
+["Word Counter","🔢","text","Hitung kata dan karakter","words"],
+["Character Counter","🔤","text","Statistik karakter","chars"],
+["Uppercase","🔠","text","Ubah menjadi huruf besar","upper"],
+["Lowercase","🔡","text","Ubah menjadi huruf kecil","lower"],
+["Reverse Text","🔄","text","Balik urutan teks","reverse"],
+["Sort Text","↕️","text","Urutkan baris teks","sort"],
+["Clean Text","🧹","text","Bersihkan spasi berlebih","clean"],
+["Random Number","🎲","random","Angka acak dalam rentang","randomnum"],
+["Random Choice","🎯","random","Pilih item secara acak","choice"],
+["Password Generator","🔐","security","Buat password acak","password"],
+["UUID Generator","🆔","developer","Buat UUID","uuid"],
+["QR Code","▦","generator","Buat QR offline","qr"],
+["Color Picker","🎨","design","Pilih warna","color"],
+["HEX → RGB","🌈","design","Konversi warna","hexrgb"],
+["RGB → HEX","🌈","design","Konversi warna","rgbhex"],
+["Gradient Generator","🖌️","design","Buat CSS gradient","gradient"],
+["CSS Shadow","🌑","design","Buat CSS box-shadow","shadow"],
+["CSS Formatter","🎨","developer","Rapikan CSS sederhana","css"],
+["JSON Formatter","{ }","developer","Format JSON","json"],
+["JSON Minifier","{ }","developer","Minify JSON","jsonmin"],
+["Base64 Encoder","🔒","developer","Encode Base64","b64e"],
+["Base64 Decoder","🔓","developer","Decode Base64","b64d"],
+["URL Encoder","🔗","developer","Encode URL","urle"],
+["URL Decoder","🔗","developer","Decode URL","urld"],
+["SHA-256 Hash","#️⃣","security","Hash teks SHA-256","hash"],
+["Binary Converter","01","developer","Angka ke binary","binary"],
+["Decimal Converter","🔢","developer","Binary/hex ke decimal","decimal"],
+["Hex Converter","🔣","developer","Decimal ke hexadecimal","hex"],
+["Octal Converter","8️⃣","developer","Decimal ke octal","octal"],
+["Morse Translator","📡","text","Teks ↔ Morse","morse"],
+["Roman Numeral","🏛️","math","Angka ↔ Romawi","roman"],
+["Lorem Ipsum","📄","text","Generator teks dummy","lorem"],
+["IP Info","🌐","network","Tampilkan IP jika tersedia","ip"],
+["User Agent","📱","network","Lihat browser/device UA","ua"],
+["Screen Info","🖥️","device","Resolusi dan pixel ratio","screen"],
+["Device Info","📱","device","Info perangkat browser","device"],
+["Battery Info","🔋","device","Status baterai jika didukung","battery"],
+["Network Info","📶","network","Info koneksi jika didukung","network"],
+["Online Detector","🌐","network","Status koneksi internet","online"],
+["Lap Stopwatch","🏁","time","Lap pada stopwatch","laps"],
+["Reaction Timer","⚡","games","Uji reaksi","reaction"],
+["Metronome","🎵","music","Metronome sederhana","metro"],
+["Dice Roller","🎲","games","Lempar dadu","dice"],
+["Coin Flip","🪙","games","Lempar koin","coin"],
+["Random Teams","👥","random","Bagi nama menjadi tim","teams"],
+["Random Name","🎯","random","Pilih nama acak","names"],
+["Guess Number","❓","games","Game tebak angka","guess"],
+["Calculator History","🧮","math","Riwayat kalkulator","history"],
+["Tip Calculator","💰","math","Hitung tip","tip"],
+["Split Bill","💵","math","Bagi tagihan","bill"],
+["Loan Calculator","🏦","math","Estimasi cicilan pinjaman","loan"],
+["Compound Interest","📈","math","Bunga majemuk","compound"],
+["Simple Interest","📊","math","Bunga sederhana","simpleinterest"],
+["Percentage Change","📉","math","Persentase perubahan","change"],
+["Average","➗","math","Rata-rata angka","average"],
+["Median","📐","math","Median angka","median"],
+["KPK","🔢","math","Kelipatan persekutuan terkecil","lcm"],
+["FPB","🔢","math","Faktor persekutuan terbesar","gcd"],
+["Prime Checker","🔎","math","Cek bilangan prima","prime"],
+["Prime Generator","🔢","math","Buat daftar bilangan prima","primes"],
+["Fibonacci","🌀","math","Deret Fibonacci","fib"],
+["Factorial","❗","math","Hitung faktorial","factorial"],
+["Power","⚡","math","Pangkat angka","power"],
+["Square Root","√","math","Akar kuadrat","sqrt"],
+["Area","📐","math","Luas persegi/persegi panjang","area"],
+["Volume","📦","math","Volume balok/kubus","volume"],
+["Speed","🚗","math","Kecepatan = jarak/waktu","speed"],
+["Distance","🛣️","math","Jarak = kecepatan×waktu","distance"],
+["Timezone","🌍","time","Waktu berdasarkan offset","timezone"],
+["Date Difference","📅","time","Selisih dua tanggal","datediff"],
+["Add Date","➕","time","Tambah hari ke tanggal","adddate"],
+["Text → Binary","01","text","Teks ke binary UTF-8","textbin"],
+["Binary → Text","🔤","text","Binary UTF-8 ke teks","bintext"],
+["Random Color","🌈","design","Warna hex acak","randcolor"],
+["Emoji Picker","😀","text","Pilih emoji","emoji"],
+["Random Characters","🔀","random","Karakter acak","randchars"],
+["Password Strength","🛡️","security","Cek kekuatan password","strength"],
+["Text Statistics","📊","text","Statistik lengkap teks","stats"],
+["Markdown Preview","📝","developer","Preview Markdown dasar","markdown"],
+["HTML Entity Encode","< >","developer","Encode karakter HTML","htmlenc"],
+["HTML Entity Decode","&","developer","Decode entity HTML","htmldec"],
+["Tool Launcher","🚀","system","Cari dan buka semua tools","launcher"]
+];
+
+const cats={all:"Semua",math:"Matematika",convert:"Konverter",time:"Waktu",text:"Teks",random:"Random",security:"Keamanan",developer:"Developer",design:"Desain",productivity:"Produktivitas",device:"Perangkat",network:"Network",games:"Game",generator:"Generator",music:"Musik",system:"Sistem"};
+let active="all", current=null, sw=0, swInt=null, laps=[], timerInt=null, guessTarget=Math.floor(Math.random()*100)+1;
+const $=id=>document.getElementById(id);
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderCats(){ $("cats").innerHTML=Object.entries(cats).map(([k,v])=>`<button class="chip ${active==k?"active":""}" onclick="setCat('${k}')">${v}</button>`).join("")}
+function render(){
+ const q=$("search").value.toLowerCase(), list=tools.filter(t=>(active=="all"||t[2]==active)&&(`${t[0]} ${t[3]}`.toLowerCase().includes(q)));
+ $("count").textContent=list.length+" tools"; $("grid").innerHTML=list.map((t,i)=>`<div class="card" style="animation-delay:${Math.min(i,20)*.018}s"><div class="icon">${t[1]}</div><h3>${t[0]}</h3><p>${t[3]}</p><button class="btn small" onclick="openTool('${t[4]}')">Buka</button></div>`).join("")}
+function setCat(c){active=c; $("title").textContent=cats[c]+" Tools";renderCats();render()}
+$("search").oninput=render;
+function randomTool(){openTool(tools[Math.floor(Math.random()*tools.length)][4])}
+function closeTool(){$("toolArea").classList.remove("show");$("grid").classList.remove("hidden");scrollTo(0,0)}
+function openTool(id){current=id;const t=tools.find(x=>x[4]==id);$("toolTitle").textContent=t[1]+" "+t[0];$("toolDesc").textContent=t[3];$("grid").classList.add("hidden");$("toolArea").classList.add("show");$("toolBody").innerHTML=body(id);scrollTo({top:0,behavior:"smooth"});initTool(id)}
+function inp(id,ph="",type="text"){return `<input id="${id}" class="input" type="${type}" placeholder="${ph}">`}
+function body(id){
+let x="";
+switch(id){
+case"calc":x=`${inp("expr","Contoh: (12+8)*3/2")}<button class="btn" onclick="calc()">Hitung</button><div id="o" class="out"></div>`;break;
+case"percent":x=`${inp("p","Persen","number")}${inp("n","Angka","number")}<button class="btn" onclick="out('o',(+v('p')/100)*+v('n'))">Hitung</button><div id="o" class="out"></div>`;break;
+case"discount":x=`${inp("price","Harga","number")}${inp("disc","Diskon %","number")}<button class="btn" onclick="let a=+v('price'),d=+v('disc');out('o','Harga akhir: '+fmt(a*(1-d/100))+'\nHemat: '+fmt(a*d/100))">Hitung</button><div id="o" class="out"></div>`;break;
+case"age":x=`${inp("dob","Tanggal lahir","date")}<button class="btn" onclick="age()">Hitung umur</button><div id="o" class="out"></div>`;break;
+case"bmi":x=`${inp("kg","Berat kg","number")}${inp("cm","Tinggi cm","number")}<button class="btn" onclick="let b=+v('kg')/(+v('cm')/100)**2;out('o',b.toFixed(2))">Hitung BMI</button><div id="o" class="out"></div>`;break;
+case"length":x=convertUI(["mm","cm","m","km","in","ft"]);break;
+case"weight":x=convertUI(["mg","g","kg","lb","t"]);break;
+case"temp":x=`${inp("val","Nilai","number")}<select id="from" class="input"><option>C</option><option>F</option><option>K</option></select><select id="to" class="input"><option>C</option><option>F</option><option>K</option></select><button class="btn" onclick="temp()">Konversi</button><div id="o" class="out"></div>`;break;
+case"time":x=convertUI(["s","min","h","day"]);break;
+case"data":x=convertUI(["B","KB","MB","GB","TB"]);break;
+case"stopwatch":case"laps":x=`<div id="sw" class="big">00:00.00</div><button class="btn" onclick="swStart()">Start</button> <button class="btn secondary" onclick="swPause()">Pause</button> <button class="btn secondary" onclick="swReset()">Reset</button><button class="btn secondary" onclick="swLap()">Lap</button><div id="laps" class="out"></div>`;break;
+case"timer":case"pomodoro":x=`${inp("mins",id=="pomodoro"?"25":"Menit","number")}${inp("secs","Detik","number")}<div id="tm" class="big">00:00</div><button class="btn" onclick="startTimer()">Start</button> <button class="btn secondary" onclick="stopTimer()">Stop</button><div id="o" class="out"></div>`;break;
+case"clock":x=`<div id="clock" class="big"></div><div id="o" class="out"></div>`;break;
+case"countdown":x=`${inp("date","Tanggal & waktu","datetime-local")}<div id="cd" class="big">--</div>`;break;
+case"calendar":x=`<div id="cal" class="out"></div>`;break;
+case"todo":x=`${inp("task","Tugas baru")}<button class="btn" onclick="addTodo()">Tambah</button><div id="todo" class="out"></div>`;break;
+case"notes":x=`<textarea id="notes" placeholder="Tulis catatan..."></textarea><button class="btn" onclick="save('notes')">Simpan</button>`;break;
+case"words":case"chars":case"stats":x=`<textarea id="txt" placeholder="Masukkan teks..."></textarea><button class="btn" onclick="textStats()">Analisis</button><div id="o" class="out"></div>`;break;
+case"upper":case"lower":case"reverse":case"clean":x=`<textarea id="txt"></textarea><button class="btn" onclick="transform('${id}')">Proses</button><div id="o" class="out"></div>`;break;
+case"sort":x=`<textarea id="txt" placeholder="Satu item per baris"></textarea><button class="btn" onclick="out('o',v('txt').split('\\n').sort().join('\\n'))">Urutkan</button><div id="o" class="out"></div>`;break;
+case"randomnum":x=`${inp("min","Min","number")}${inp("max","Max","number")}<button class="btn" onclick="out('o',Math.floor(+v('min')+Math.random()*(+v('max')-+v('min')+1)))">Acak</button><div id="o" class="out"></div>`;break;
+case"choice":case"names":x=`<textarea id="txt" placeholder="Pisahkan dengan koma atau baris baru"></textarea><button class="btn" onclick="let a=v('txt').split(/[\\n,]+/).map(x=>x.trim()).filter(Boolean);out('o',a[Math.floor(Math.random()*a.length)]||'Kosong')">Pilih</button><div id="o" class="out"></div>`;break;
+case"password":x=`${inp("len","Panjang","number")}<button class="btn" onclick="password()">Generate</button><div id="o" class="out"></div>`;break;
+case"uuid":x=`<button class="btn" onclick="out('o',crypto.randomUUID())">Generate UUID</button><div id="o" class="out"></div>`;break;
+case"qr":x=`${inp("qr","Teks/URL")}<button class="btn" onclick="makeQR()">Buat QR</button><div id="o" class="out">QR offline menggunakan SVG sederhana.</div>`;break;
+case"color":x=`<input id="color" type="color" value="#7c5cff" style="width:100%;height:80px"><div id="o" class="out">#7c5cff</div>`;break;
+case"hexrgb":x=`${inp("hex","#7c5cff")}<button class="btn" onclick="hexrgb()">Convert</button><div id="o" class="out"></div>`;break;
+case"rgbhex":x=`${inp("r","R","number")}${inp("g","G","number")}${inp("b","B","number")}<button class="btn" onclick="rgbhex()">Convert</button><div id="o" class="out"></div>`;break;
+case"gradient":x=`${inp("c1","#7c5cff")}${inp("c2","#21d4fd")}<button class="btn" onclick="out('o','background: linear-gradient(135deg, '+v('c1')+', '+v('c2')+');')">Generate CSS</button><div id="o" class="out"></div>`;break;
+case"shadow":x=`${inp("blur","Blur px","number")}${inp("spread","Spread px","number")}<button class="btn" onclick="out('o','box-shadow: 0 8px '+v('blur')+'px '+v('spread')+'px rgba(0,0,0,.3);')">Generate</button><div id="o" class="out"></div>`;break;
+case"json":case"jsonmin":x=`<textarea id="txt"></textarea><button class="btn" onclick="jsonTool('${id}')">Proses</button><div id="o" class="out"></div>`;break;
+case"b64e":case"b64d":case"urle":case"urld":case"htmlenc":case"htmldec":x=`<textarea id="txt"></textarea><button class="btn" onclick="encodeTool('${id}')">Proses</button><div id="o" class="out"></div>`;break;
+case"hash":x=`<textarea id="txt"></textarea><button class="btn" onclick="hash()">SHA-256</button><div id="o" class="out"></div>`;break;
+case"binary":case"decimal":case"hex":case"octal":x=`${inp("num","Angka")}<button class="btn" onclick="numberTool('${id}')">Convert</button><div id="o" class="out"></div>`;break;
+case"morse":x=`<textarea id="txt"></textarea><button class="btn" onclick="morse()">Teks → Morse</button><div id="o" class="out"></div>`;break;
+case"roman":x=`${inp("num","Angka 1-3999","number")}<button class="btn" onclick="roman()">Convert</button><div id="o" class="out"></div>`;break;
+case"lorem":x=`${inp("count","Jumlah kata","number")}<button class="btn" onclick="lorem()">Generate</button><div id="o" class="out"></div>`;break;
+case"ua":case"screen":case"device":case"battery":case"network":case"online":case"ip":x=`<button class="btn" onclick="info('${id}')">Refresh</button><div id="o" class="out"></div>`;break;
+case"reaction":x=`<button class="btn" id="react" onclick="reaction()">Mulai</button><div id="o" class="out"></div>`;break;
+case"metro":x=`${inp("bpm","BPM","number")}<button class="btn" onclick="metro()">Start/Stop</button><div id="o" class="out"></div>`;break;
+case"dice":x=`${inp("sides","Jumlah sisi","number")}<button class="btn" onclick="out('o',Math.floor(Math.random()*+v('sides'))+1)">Lempar</button><div id="o" class="big"></div>`;break;
+case"coin":x=`<button class="btn" onclick="out('o',Math.random()<.5?'🪙 HEADS':'🪙 TAILS')">Lempar</button><div id="o" class="big"></div>`;break;
+case"teams":x=`<textarea id="txt" placeholder="Nama, satu per baris"></textarea>${inp("teamn","Jumlah tim","number")}<button class="btn" onclick="teams()">Bagi</button><div id="o" class="out"></div>`;break;
+case"guess":x=`${inp("guess","Tebak 1-100","number")}<button class="btn" onclick="guess()">Cek</button><div id="o" class="out"></div>`;break;
+case"history":x=`<div id="o" class="out">${esc(localStorage.getItem("calcHistory")||"Belum ada riwayat.")}</div>`;break;
+case"tip":x=`${inp("bill","Tagihan","number")}${inp("tip","Tip %","number")}<button class="btn" onclick="out('o',fmt(+v('bill')*(1+ +v('tip')/100)))">Total</button><div id="o" class="out"></div>`;break;
+case"bill":x=`${inp("bill","Tagihan","number")}${inp("people","Orang","number")}<button class="btn" onclick="out('o',fmt(+v('bill')/+v('people')))">Per orang</button><div id="o" class="out"></div>`;break;
+case"average":case"median":x=`<textarea id="txt" placeholder="Angka dipisahkan koma"></textarea><button class="btn" onclick="let a=v('txt').split(',').map(Number).filter(x=>!isNaN(x));out('o', '${id=="average"?"Rata-rata":"Median"}: '+(id=='average'?a.reduce((x,y)=>x+y,0)/a.length:a.sort((x,y)=>x-y)[Math.floor((a.length-1)/2)]))">Hitung</button><div id="o" class="out"></div>`;break;
+case"lcm":case"gcd":x=`${inp("a","Angka A","number")}${inp("b","Angka B","number")}<button class="btn" onclick="let a=+v('a'),b=+v('b'),g=(x,y)=>y?g(y,x%y):Math.abs(x);out('o', '${id=="gcd"?"FPB":"KPK"}: '+(${id=="gcd"?"g(a,b)":"Math.abs(a*b)/g(a,b)"}))">Hitung</button><div id="o" class="out"></div>`;break;
+case"prime":x=`${inp("num","Angka","number")}<button class="btn" onclick="let n=+v('num'),p=n>1&&Array.from({length:Math.sqrt(n)-1},(_,i)=>i+2).every(i=>n%i);out('o',p?'Prima':'Bukan prima')">Cek</button><div id="o" class="out"></div>`;break;
+case"primes":x=`${inp("num","Batas","number")}<button class="btn" onclick="let n=+v('num'),a=[];for(let i=2;i<=n;i++){let p=true;for(let j=2;j*j<=i;j++)if(i%j==0)p=false;if(p)a.push(i)}out('o',a.join(', '))">Generate</button><div id="o" class="out"></div>`;break;
+case"fib":case"factorial":x=`${inp("num","N","number")}<button class="btn" onclick="let n=+v('num'); if('${id}'=='factorial'){let r=1;for(let i=2;i<=n;i++)r*=i;out('o',r)}else{let a=[0,1];for(let i=2;i<n;i++)a.push(a[i-1]+a[i-2]);out('o',a.slice(0,n).join(', '))}">Hitung</button><div id="o" class="out"></div>`;break;
+case"power":case"sqrt":x=id=="power"?`${inp("a","Angka","number")}${inp("b","Pangkat","number")}<button class="btn" onclick="out('o',Math.pow(+v('a'),+v('b')))">Hitung</button>`:`${inp("a","Angka","number")}<button class="btn" onclick="out('o',Math.sqrt(+v('a')))">Hitung</button>`;x+=`<div id="o" class="out"></div>`;break;
+case"area":x=`${inp("a","Panjang","number")}${inp("b","Lebar","number")}<button class="btn" onclick="out('o',+v('a')*+v('b'))">Luas</button><div id="o" class="out"></div>`;break;
+case"volume":x=`${inp("a","Panjang","number")}${inp("b","Lebar","number")}${inp("c","Tinggi","number")}<button class="btn" onclick="out('o',+v('a')*+v('b')*+v('c'))">Volume</button><div id="o" class="out"></div>`;break;
+case"speed":case"distance":x=`${inp("a",id=="speed"?"Jarak":"Kecepatan","number")}${inp("b","Waktu","number")}<button class="btn" onclick="out('o',${id=="speed"?"v('a')/v('b')":"v('a')*v('b')"})">Hitung</button><div id="o" class="out"></div>`;break;
+case"datediff":x=`${inp("d1","Tanggal 1","date")}${inp("d2","Tanggal 2","date")}<button class="btn" onclick="out('o',Math.abs(new Date(v('d2'))-new Date(v('d1')))/86400000+' hari')">Hitung</button><div id="o" class="out"></div>`;break;
+case"adddate":x=`${inp("d","Tanggal","date")}${inp("days","Hari","number")}<button class="btn" onclick="let d=new Date(v('d'));d.setDate(d.getDate()+ +v('days'));out('o',d.toLocaleDateString('id-ID'))">Tambah</button><div id="o" class="out"></div>`;break;
+case"textbin":x=`<textarea id="txt"></textarea><button class="btn" onclick="out('o',Array.from(v('txt')).map(c=>c.codePointAt(0).toString(2).padStart(8,'0')).join(' '))">Convert</button><div id="o" class="out"></div>`;break;
+case"bintext":x=`<textarea id="txt"></textarea><button class="btn" onclick="out('o',v('txt').trim().split(/\\s+/).map(x=>String.fromCodePoint(parseInt(x,2))).join(''))">Convert</button><div id="o" class="out"></div>`;break;
+case"randcolor":x=`<button class="btn" onclick="out('o','#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'))">Generate</button><div id="o" class="big"></div>`;break;
+case"randchars":x=`${inp("len","Panjang","number")}<button class="btn" onclick="let s='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',r='';for(let i=0;i<(+v('len')||12);i++)r+=s[Math.floor(Math.random()*s.length)];out('o',r)">Generate</button><div id="o" class="big"></div>`;break;
+case"emoji":x=`<div style="font-size:35px;line-height:1.7">😀 😎 😂 🤩 🥳 🔥 ⚡ 🚀 🎮 🐱 🐶 🦊 🐼 🐸 👾 ❤️ 💙 💜 💚 ⭐ 🌈 ☀️ 🌙 🍕 🍔 🍟 ⚽ 🏆 💎</div>`;break;
+case"strength":x=`${inp("pw","Password","password")}<button class="btn" onclick="strength()">Cek</button><div id="o" class="out"></div>`;break;
+case"markdown":x=`<textarea id="txt"></textarea><button class="btn" onclick="out('o',v('txt').replace(/^# (.*)$/gm,'<h1>$1</h1>').replace(/\\*\\*(.*?)\\*\\*/g,'<b>$1</b>').replace(/\\*(.*?)\\*/g,'<i>$1</i>').replace(/\\n/g,'<br>'))">Preview</button><div id="o" class="out"></div>`;break;
+case"launcher":x=`<input id="launch" class="input" placeholder="Ketik nama tool..."><div id="o" class="out"></div>`;break;
+default:x=`<div class="muted">Tool ini siap digunakan.</div>`}
+return x}
+function v(id){return $(id)?.value??""}function out(id,s){$(id).textContent=s}
+function fmt(n){return Number(n).toLocaleString("id-ID",{maximumFractionDigits:4})}
+function convertUI(units){return `${inp("val","Nilai","number")}<select id="from" class="input">${units.map(x=>`<option>${x}</option>`).join("")}</select><select id="to" class="input">${units.map(x=>`<option>${x}</option>`).join("")}</select><button class="btn" onclick="convert(${JSON.stringify(units)})">Konversi</button><div id="o" class="out"></div>`}
+const factors={mm:1,cm:10,m:1000,km:1e6,in:25.4,ft:304.8,mg:1,g:1000,kg:1e6,lb:453592.37,t:1e9,s:1,min:60,h:3600,day:86400,B:1,KB:1024,MB:1048576,GB:1073741824,TB:1099511627776};
+function convert(){out("o",fmt(+v("val")*factors[v("from")]/factors[v("to")])+" "+v("to"))}
+function calc(){try{let e=v("expr").replace(/[^0-9+*/().% -]/g,"");let r=Function("return "+e)();out("o",r);localStorage.setItem("calcHistory",(localStorage.getItem("calcHistory")||"")+"\n"+e+" = "+r)}catch{out("o","Ekspresi tidak valid")}}
+function age(){let d=new Date(v("dob")),n=new Date(),a=n.getFullYear()-d.getFullYear();if(new Date(n.getFullYear(),d.getMonth(),d.getDate())>n)a--;out("o",a+" tahun")}
+function temp(){let x=+v("val"),f=v("from"),t=v("to");if(f=="F")x=(x-32)*5/9;if(f=="K")x-=273.15;if(t=="F")x=x*9/5+32;if(t=="K")x+=273.15;out("o",fmt(x)+" °"+t)}
+function password(){let n=Math.max(4,Math.min(100,+v("len")||16)),s="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";let r="";for(let i=0;i<n;i++)r+=s[Math.floor(Math.random()*s.length)];out("o",r)}
+function jsonTool(id){try{let o=JSON.parse(v("txt"));out("o",id=="json"?JSON.stringify(o,null,2):JSON.stringify(o))}catch{out("o","JSON tidak valid")}}
+function encodeTool(id){try{let s=v("txt"),r=id=="b64e"?btoa(unescape(encodeURIComponent(s))):id=="b64d"?decodeURIComponent(escape(atob(s))):id=="urle"?encodeURIComponent(s):id=="urld"?decodeURIComponent(s):id=="htmlenc"?esc(s):s.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");out("o",r)}catch{out("o","Input tidak valid")}}
+async function hash(){let b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v("txt")));out("o",Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join(""))}
+function numberTool(id){let n=+v("num"),r=id=="binary"?n.toString(2):id=="hex"?n.toString(16).toUpperCase():id=="octal"?n.toString(8):parseInt(v("num"),id=="decimal"?0:10);out("o",r)}
+function transform(id){let s=v("txt");let r=id=="upper"?s.toUpperCase():id=="lower"?s.toLowerCase():id=="reverse"?Array.from(s).reverse().join(""):s.replace(/\s+/g," ").trim();out("o",r)}
+function textStats(){let s=v("txt"),w=s.trim()?s.trim().split(/\s+/).length:0;out("o",`Kata: ${w}\nKarakter: ${s.length}\nTanpa spasi: ${s.replace(/\s/g,"").length}\nBaris: ${s?s.split(/\n/).length:0}`)}
+function lorem(){let a="lorem ipsum dolor sit amet consectetur adipiscing elit integer posuere sapien vitae justo aliquet".split(" "),n=Math.max(1,+v("count")||30),r=[];for(let i=0;i<n;i++)r.push(a[i%a.length]);out("o",r.join(" "))}
+function hexrgb(){let h=v("hex").replace("#","");if(h.length==3)h=h.split("").map(x=>x+x).join("");out("o",`rgb(${parseInt(h.slice(0,2),16)}, ${parseInt(h.slice(2,4),16)}, ${parseInt(h.slice(4,6),16)})`)}
+function rgbhex(){let r=[v("r"),v("g"),v("b")].map(x=>Math.max(0,Math.min(255,+x)));out("o","#"+r.map(x=>x.toString(16).padStart(2,"0")).join("").toUpperCase())}
+function roman(){let n=+v("num"),map=[[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],[50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]],r="";for(let [x,c] of map){while(n>=x){r+=c;n-=x}}out("o",r||"Masukkan 1-3999")}
+function info(id){let d=id=="ua"?navigator.userAgent:id=="screen"?`Resolusi: ${screen.width}×${screen.height}\nPixel ratio: ${devicePixelRatio}`:id=="device"?`Platform: ${navigator.platform}\nBahasa: ${navigator.language}\nCPU threads: ${navigator.hardwareConcurrency||"?"}`:id=="online"?navigator.onLine?"ONLINE":"OFFLINE":id=="network"?JSON.stringify(navigator.connection?.effectiveType||"Tidak tersedia"):id=="battery"?"Membaca...":"IP eksternal membutuhkan layanan internet.";out("o",d);if(id=="battery"&&navigator.getBattery)navigator.getBattery().then(b=>out("o",`Level: ${Math.round(b.level*100)}%\nCharging: ${b.charging?"Ya":"Tidak"}`))}
+function reaction(){let b=$("react");b.textContent="Tunggu...";b.disabled=true;let t=500+Math.random()*3000;setTimeout(()=>{b.disabled=false;b.textContent="KLIK!";let s=performance.now();b.onclick=()=>{out("o",(performance.now()-s).toFixed(0)+" ms");b.onclick=reaction}},t)}
+function teams(){let a=v("txt").split(/\n/).filter(Boolean).sort(()=>Math.random()-.5),n=+v("teamn")||2,r=Array.from({length:n},()=>[]);a.forEach((x,i)=>r[i%n].push(x));out("o",r.map((x,i)=>`Tim ${i+1}: ${x.join(", ")}`).join("\n"))}
+function guess(){let n=+v("guess");if(n==guessTarget){out("o","Benar! Angka baru dibuat.");guessTarget=Math.floor(Math.random()*100)+1}else out("o",n>guessTarget?"Terlalu besar":"Terlalu kecil")}
+function save(id){localStorage.setItem(id,v(id));out("notes","Tersimpan offline.")}
+function addTodo(){let a=JSON.parse(localStorage.getItem("todos")||"[]");a.push(v("task"));localStorage.setItem("todos",JSON.stringify(a));drawTodo()}
+function drawTodo(){let a=JSON.parse(localStorage.getItem("todos")||"[]");$("todo").innerHTML=a.map((x,i)=>`☐ ${esc(x)} <button class="btn small danger" onclick="delTodo(${i})">×</button>`).join("<br>")||"Belum ada tugas."}
+function delTodo(i){let a=JSON.parse(localStorage.getItem("todos")||"[]");a.splice(i,1);localStorage.setItem("todos",JSON.stringify(a));drawTodo()}
+function swStart(){if(swInt)return;let st=Date.now()-sw;swInt=setInterval(()=>{$("sw").textContent=fmtTime(Date.now()-st)},30)}
+function swPause(){clearInterval(swInt);swInt=null;sw=sw?sw:Date.now();sw=Date.now()-(parseTime($("sw").textContent)||0)}
+function swReset(){clearInterval(swInt);swInt=null;sw=0;$("sw").textContent="00:00.00";$("laps").textContent=""}
+function swLap(){laps.push($("sw").textContent);$("laps").textContent=laps.map((x,i)=>`${i+1}. ${x}`).join("\n")}
+function fmtTime(ms){let s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0")+"."+String(Math.floor(ms%1000/10)).padStart(2,"0")}
+function parseTime(s){let a=s.split(/[:.]/).map(Number);return ((a[0]*60+a[1])*1000+a[2]*10)||0}
+function startTimer(){stopTimer();let sec=(+v("mins")||0)*60+(+v("secs")||0);timerInt=setInterval(()=>{sec--;let m=Math.floor(Math.max(sec,0)/60);$("tm").textContent=String(m).padStart(2,"0")+":"+String(Math.max(sec,0)%60).padStart(2,"0");if(sec<=0)stopTimer()},1000)}
+function stopTimer(){clearInterval(timerInt);timerInt=null}
+function initTool(id){if(id=="notes")$("notes").value=localStorage.getItem("notes")||"";if(id=="todo")drawTodo();if(id=="clock"){let f=()=>{$("clock").textContent=new Date().toLocaleString("id-ID")};f();window._clock=setInterval(f,1000)}if(id=="calendar"){$("cal").textContent=new Date().toLocaleDateString("id-ID",{dateStyle:"full"})}}
+function makeQR(){out("o","QR generator offline murni membutuhkan encoder QR. Untuk menjaga file tanpa library eksternal, gunakan teks/URL di sini sebagai data QR.")}
+function metro(){let bpm=+v("bpm")||100;window._metro?.();let a=setInterval(()=>{out("o","♪ "+bpm+" BPM")},60000/bpm);window._metro=()=>clearInterval(a)}
+function hideModal(){$("modal").classList.remove("show")}
+window.addEventListener("beforeunload",()=>clearInterval(window._clock));
+renderCats();render();
+</script>
+</body></html>
